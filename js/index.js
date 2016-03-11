@@ -1,8 +1,16 @@
 (function (root) {
-    var map = root.maze.MAZE_Y;
+    var mazeName = document.getElementById('maze');
+    var map = eval('root.maze.' + mazeName.options[mazeName.selectedIndex].value);
     var path = root.maze.solution(map, 1, 0);
-
     document.querySelector('.outer').appendChild(
         root.maze.render(map, path)
     );
+    mazeName.addEventListener('change', function() {
+        map = eval('root.maze.' + this.options[this.selectedIndex].value);
+        document.querySelector('.outer').innerHTML = '';
+        var path = root.maze.solution(map, 1, 0);
+        document.querySelector('.outer').appendChild(
+            root.maze.render(map, path)
+        );
+    });
 })(this);
