@@ -8,6 +8,11 @@
     );
     mazeName.addEventListener('change', function() {
         map = eval('root.maze.' + this.options[this.selectedIndex].value);
+        root.maze.render(map, path);
+        document.querySelector('.outer').innerHTML = '';
+        document.querySelector('.outer').appendChild(
+            root.maze.render(map, path)
+        );
     });
     mazeButton.addEventListener('click', function(){
         document.querySelector('.outer').innerHTML = '';
