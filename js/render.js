@@ -80,5 +80,73 @@
         return containerElem;
     }
 
+  function my_render(obj, currentStep, path) {
+
+    var map = obj.calculatedMap;
+    var max_step = obj.step;
+
+    if (path && path.length) {
+      var point,
+          i;
+
+      for (i = 0; i < path.length; i++) {
+        point = path[i];
+        map[point[1]][point[0]] = PATH;
+      }
+      point = path[path.length - 1];
+      map[point[1]][point[0]] = CURRENT;
+    }
+
+    var containerElem = element('div', 'maze'),
+        rowElem,
+        type,
+        row,
+        cell,
+        x,
+        y;
+
+    for (y = 0; y < map.length; y++) {
+      row = map[y];
+      rowElem = element('div', 'maze__row');
+
+      for (x = 0; x < row.length; x++) {
+        cell = row[x];
+
+        switch (cell) {
+          case WALL:
+            type = 'wall';
+            break;
+
+          case PATH:
+            type = 'path';
+            break;
+
+          case CURRENT:
+            type = 'current';
+            break;
+
+          default:
+              if(cell > 0 && cell <= currentStep) {
+                type = 'step';
+              }
+              else {
+                type = undefined;
+              }
+        }
+
+        rowElem.appendChild(
+            element('div', 'maze__cell' + (type ? ' maze__cell_' + type : ''))
+        );
+      }
+
+      containerElem.appendChild(rowElem);
+    }
+
+    return containerElem;
+
+
+  }
+
     root.maze.render = render;
+    root.maze.my_render = my_render;
 })(this);

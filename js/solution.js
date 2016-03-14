@@ -4,6 +4,7 @@
     var PATH = root.maze.PATH;
     var CURRENT = root.maze.CURRENT;
 
+
   /**
    * Функция находит путь к выходу и возвращает найденный маршрут
    *
@@ -82,6 +83,58 @@
     }
 
     /**
+     * Gets map with calculated wave and the last step number.
+     *
+     * @param {number[][]} maze
+     * @param {number} x
+     * @param {number} y
+     * @returns {object} {{calculatedMap: {number[][]}, step: number}}
+     */
+    function getCalculatedMapAndlastStep(maze, x, y) {
+      var map = JSON.parse(JSON.stringify(maze)),
+          step = 1,
+          exitI = 0, exitJ = 0,
+          waveFront = [], newWaveFront = [];
+
+      map[y][x] = step;
+      newWaveFront.push([y, x]);
+      do {
+        waveFront = JSON.parse(JSON.stringify(newWaveFront));
+        newWaveFront = [];
+        for (var position = 0; position < waveFront.length; position++) {
+          // Check is exit reached.
+          if (waveFront[position][0] == map.length - 1) {
+            exitI = waveFront[position][0];
+            exitJ = waveFront[position][1];
+            break;
+          }
+
+          if (checkAvailablePoint(map, waveFront[position][0] + 1, waveFront[position][1])) {
+            map[waveFront[position][0] + 1][waveFront[position][1]] = step + 1;
+            newWaveFront.push([waveFront[position][0] + 1, waveFront[position][1]]);
+          }
+          if (checkAvailablePoint(map, waveFront[position][0] - 1, waveFront[position][1])) {
+            map[waveFront[position][0] - 1][waveFront[position][1]] = step + 1;
+            newWaveFront.push([waveFront[position][0] - 1, waveFront[position][1]]);
+          }
+          if (checkAvailablePoint(map, waveFront[position][0], waveFront[position][1] + 1)) {
+            map[waveFront[position][0]][waveFront[position][1] + 1] = step + 1;
+            newWaveFront.push([waveFront[position][0], waveFront[position][1] + 1]);
+          }
+          if (checkAvailablePoint(map, waveFront[position][0], waveFront[position][1] - 1)) {
+            map[waveFront[position][0]][waveFront[position][1] - 1] = step + 1;
+            newWaveFront.push([waveFront[position][0], waveFront[position][1] - 1]);
+          }
+        }
+        waveFront = [];
+        step++;
+      }
+      while (newWaveFront.length);
+
+      return {calculatedMap: map, step: step};
+    }
+
+    /**
      * Checks the path variant.
      *
      * @param {number[][]} map
@@ -107,4 +160,5 @@
     }
 
     root.maze.solution = solution;
+    root.maze.calculated = getCalculatedMapAndlastStep;
 })(this);
