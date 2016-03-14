@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="select-maze">
-        <select name="maze" id="maze">
+    <div class="select-maze__wrap">
+        <select class="select-maze" name="maze" id="maze">
             <option value="MAZE_21" selected>MAZE_21</option>
             <option value="MAZE_31">MAZE_31</option>
             <option value="MAZE_51">MAZE_51</option>
             <option value="MAZE_Y">MAZE_Y</option>
         </select>
+        <button class="select-maze__button" id="maze-but">Get exit!</button>
     </div>
     <div class="outer"></div>
     <script src="js/consts.js"></script>

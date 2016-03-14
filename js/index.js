@@ -1,16 +1,19 @@
 (function (root) {
     var mazeName = document.getElementById('maze');
+    var mazeButton = document.getElementById('maze-but');
     var map = eval('root.maze.' + mazeName.options[mazeName.selectedIndex].value);
-    var path = root.maze.solution(map, 1, 0);
+    var path;
     document.querySelector('.outer').appendChild(
         root.maze.render(map, path)
     );
     mazeName.addEventListener('change', function() {
         map = eval('root.maze.' + this.options[this.selectedIndex].value);
+    });
+    mazeButton.addEventListener('click', function(){
         document.querySelector('.outer').innerHTML = '';
         var path = root.maze.solution(map, 1, 0);
         document.querySelector('.outer').appendChild(
             root.maze.render(map, path)
         );
-    });
+    })
 })(this);
