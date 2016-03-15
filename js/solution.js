@@ -14,51 +14,17 @@
    * @returns {[number, number][]} маршрут к выходу представленный списоком пар координат
    */
     function solution(maze, x, y) {
-      var map = JSON.parse(JSON.stringify(maze)),
-          i = 0, j = 0,
-          step = 1,
-          exitI = 0, exitJ = 0,
+      var map,
           path = [],
-          waveFront = [], newWaveFront = [];
-
-      map[y][x] = step;
-      newWaveFront.push([y, x]);
-      do {
-        waveFront = JSON.parse(JSON.stringify(newWaveFront));
-        newWaveFront = [];
-        for (var position = 0; position < waveFront.length; position++) {
-          // Check is exit reached.
-          if (waveFront[position][0] == map.length - 1) {
-            exitI = waveFront[position][0];
-            exitJ = waveFront[position][1];
-            break;
-          }
-
-          if (checkAvailablePoint(map, waveFront[position][0] + 1, waveFront[position][1])) {
-            map[waveFront[position][0] + 1][waveFront[position][1]] = step + 1;
-            newWaveFront.push([waveFront[position][0] + 1, waveFront[position][1]]);
-          }
-          if (checkAvailablePoint(map, waveFront[position][0] - 1, waveFront[position][1])) {
-            map[waveFront[position][0] - 1][waveFront[position][1]] = step + 1;
-            newWaveFront.push([waveFront[position][0] - 1, waveFront[position][1]]);
-          }
-          if (checkAvailablePoint(map, waveFront[position][0], waveFront[position][1] + 1)) {
-            map[waveFront[position][0]][waveFront[position][1] + 1] = step + 1;
-            newWaveFront.push([waveFront[position][0], waveFront[position][1] + 1]);
-          }
-          if (checkAvailablePoint(map, waveFront[position][0], waveFront[position][1] - 1)) {
-            map[waveFront[position][0]][waveFront[position][1] - 1] = step + 1;
-            newWaveFront.push([waveFront[position][0], waveFront[position][1] - 1]);
-          }
-        }
-        waveFront = [];
-        step++;
-      }
-      while (newWaveFront.length);
-
+          calcObj = getCalculatedMapLastStepExit(maze, x, y),
+          i,
+          j,
+          step;
+      map = calcObj.calculatedMap;
+      i = calcObj.exit.exitI;
+      j = calcObj.exit.exitJ;
+      step = calcObj.step;
       // Set coordinates to exit.
-      i = exitI;
-      j = exitJ;
       path.push([j, i]);
       while (step > 0) {
         if (checkVariant(map, i - 1, j, step)) {
@@ -83,14 +49,14 @@
     }
 
     /**
-     * Gets map with calculated wave and the last step number.
+     * Gets map with calculated wave, last step number and exit coordinates.
      *
      * @param {number[][]} maze
      * @param {number} x
      * @param {number} y
-     * @returns {object} {{calculatedMap: {number[][]}, step: number}}
+     * @returns {object} {{calculatedMap: {number[][]}, step: {number}, exit: {object}}
      */
-    function getCalculatedMapAndlastStep(maze, x, y) {
+    function getCalculatedMapLastStepExit(maze, x, y) {
       var map = JSON.parse(JSON.stringify(maze)),
           step = 1,
           exitI = 0, exitJ = 0,
@@ -131,7 +97,7 @@
       }
       while (newWaveFront.length);
 
-      return {calculatedMap: map, step: step};
+      return {calculatedMap: map, step: step, exit: {exitI: exitI, exitJ: exitJ}};
     }
 
     /**
@@ -160,5 +126,5 @@
     }
 
     root.maze.solution = solution;
-    root.maze.calculated = getCalculatedMapAndlastStep;
+    root.maze.calculated = getCalculatedMapLastStepExit;
 })(this);
