@@ -34,7 +34,7 @@
                   root.maze.my_render(obj, ind, path)
               );
             }
-          }, 100 * ind);
+          }, 20 * ind);
         })(i);
       }
 

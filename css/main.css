@@ -49,8 +49,6 @@ body {
     width: 10px;
     height: 10px;
     padding: 0;
-    margin-right: 1px;
-    margin-bottom: 1px;
     border: 1px solid #eee;
 }
 
@@ -59,7 +57,7 @@ body {
 }
 
 .maze__cell_path {
-    background-color: #fad946;
+    background-color: #f4ea50;
 }
 
 .maze__cell_current {
@@ -67,5 +65,5 @@ body {
 }
 
 .maze__cell_step {
-    background-color: #0baef2;
+    background-color: #0BB4CF;
 }
